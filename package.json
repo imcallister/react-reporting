@@ -1,0 +1,14 @@
+{
+  "name": "react-reporting",
+  "version": "0.0.1",
+  "description": "A library for financial reporting build on react-table and react-semantic-ui",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
