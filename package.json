@@ -2,13 +2,21 @@
   "name": "react-reporting",
   "version": "0.0.1",
   "description": "A library for financial reporting build on react-table and react-semantic-ui",
-  "main": "index.js",
+  "dependencies": {
+    "react-table": "^7.0.0-rc.15",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.87.2"
+  },
   "directories": {
     "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcallister/react-reporting.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
