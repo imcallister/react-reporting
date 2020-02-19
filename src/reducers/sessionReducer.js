@@ -59,7 +59,7 @@ export const dispatchMiddleware = (dispatch, serverApi) => {
 
 
 
-const sessionReducer = (state, action) => {
+export const sessionReducer = (state, action) => {
 
     const environmentReducer = (state, action) => {
         if (action.type === 'SET_PREFERENCES') {
@@ -82,5 +82,3 @@ const sessionReducer = (state, action) => {
         pages: pageReducer(state.pages, action)
     }
 }
-
-export default sessionReducer;

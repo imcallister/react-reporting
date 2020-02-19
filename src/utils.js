@@ -46,19 +46,3 @@ export function checkHttpStatus(response) {
 export function parseJSON(response) {
     return response.json();
 }
-
-export function reportIdentifier(reportParams) {
-    if (reportParams.item || reportParams.qstring) {
-        return [reportParams.report, reportParams.item, reportParams.qstring];
-    } else {
-        return reportParams.report;
-    }
-}
-
-export function chartIdentifier(reportParams) {
-    if (reportParams.item || reportParams.qstring) {
-        return [reportParams.chart, reportParams.item, reportParams.qstring];
-    } else {
-        return reportParams.chart;
-    }
-}
