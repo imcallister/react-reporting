@@ -17,3 +17,13 @@ export const log = (group, logs) => {
     console.groupEnd()
 }
 
+export const queryIsInCache = (queryCache, queryDef) => (
+  Object.keys(queryCache).includes(queryHash(queryDef))
+)
+
+export const getCachedResults = (queryCache, queryDef) => {
+  return (
+    queryCache[queryHash(queryDef)]
+  )
+}
+

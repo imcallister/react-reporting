@@ -10,7 +10,7 @@ import { TableHeader } from './components/TableHeader';
 
 import { downloader } from './downloads';
 import { SessionContext } from './reducers/contexts';
-import { queryHash } from './reducers/utils'
+import { queryIsInCache, getCachedResults } from './reducers/utils'
 
 import { Message} from 'semantic-ui-react';
 
@@ -25,8 +25,6 @@ export const TablePage = ({ queryDef, tableTitle, extraHeader, columnDefs, group
     const [modalUrl, setModalUrl] = useState()
     const { rows, columns, isLoading, errorMessage } = tableState;
 
-    const qHash = queryHash(queryDef);
-
     const usedRowClickHandler = (id) => {
         console.log('Row Click. Not Implemented', id);
     };
@@ -38,8 +36,7 @@ export const TablePage = ({ queryDef, tableTitle, extraHeader, columnDefs, group
     const refreshTable = () => {
       sessionDispatch({
         type: 'FETCH_QUERY',
-        queryDef: queryDef,
-        qHash: qHash
+        queryDef: queryDef
       });
       tableDispatch({
           type: 'IS_LOADING'
@@ -61,17 +58,16 @@ export const TablePage = ({ queryDef, tableTitle, extraHeader, columnDefs, group
     }
 
     useEffect(() => {
-        if (!Object.keys(queryCache).includes(qHash)) {
+        if (!queryIsInCache(queryCache, queryDef)) {
             sessionDispatch({
                 type: 'FETCH_QUERY',
-                queryDef: queryDef,
-                qHash: qHash
+                queryDef: queryDef
             });
             tableDispatch({
                 type: 'IS_LOADING'
             })
         } else {
-            const cached = queryCache[qHash];
+          const cached = getCachedResults(queryCache, queryDef);
             tableDispatch(
                 {
                     type: 'RECEIVE_REPORT',
@@ -85,7 +81,7 @@ export const TablePage = ({ queryDef, tableTitle, extraHeader, columnDefs, group
     }, [queryDef]);
 
     useEffect(() => {
-        const cached = queryCache[qHash];
+        const cached = getCachedResults(queryCache, queryDef);
         if (cached) {
           tableDispatch(
               {

@@ -31,8 +31,7 @@ export const Drilldown = ({ reportParams, searchField }) => {
             if (!Object.keys(queryCache).includes(qHash)) {
                 sessionDispatch({
                     type: 'FETCH_QUERY',
-                    queryDef: qdef,
-                    qHash: qHash
+                    queryDef: qdef
                 })
             }
         }

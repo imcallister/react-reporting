@@ -1,6 +1,6 @@
 
 import { updateObject } from '../utils';
-import { log } from './utils';
+import { log, queryHash } from './utils';
 
 
 
@@ -12,7 +12,7 @@ const queryReducer = (state, action) => {
             const newState = updateObject(
                 state,
                 {
-                    [action.qHash]: {
+                    [queryHash(action.queryDef)]: {
                         queryDef: action.queryDef,
                         results: action.results
                     }

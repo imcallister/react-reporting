@@ -4,7 +4,7 @@ import jobReducer from './jobReducer';
 import pageReducer from './pageReducer';
 
 
-import { log } from './utils';
+import { log, queryHash } from './utils';
 import { updateObject } from '../utils';
 
 
@@ -17,7 +17,6 @@ export const dispatchMiddleware = (dispatch, serverApi) => {
             'Error: FETCH_QUERY',
             {
                 queryDef: queryDef,
-                qHash: qHash,
                 error: error
             }
         );
@@ -28,7 +27,6 @@ export const dispatchMiddleware = (dispatch, serverApi) => {
             {
                 type: 'FETCH_QUERY',
                 queryDef: queryDef,
-                qHash: qHash,
                 results: response
             }
         );
@@ -47,8 +45,7 @@ export const dispatchMiddleware = (dispatch, serverApi) => {
             case 'FETCH_QUERY':
                 query(
                     dispatch,
-                    action.queryDef,
-                    action.qHash
+                    action.queryDef
                 )
                 break;
             default:
