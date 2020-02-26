@@ -1,14 +1,12 @@
 import React from 'react'
-import { useTable, useFilters, useGroupBy, useExpanded } from 'react-table';
+import { useTable, useFilters, useGroupBy, useSortBy, useExpanded, usePagination } from 'react-table';
 
 import { filters } from './components/filters';
+import { PaginationControl } from './components/PaginationControl';
 import { BaseColumnFilter } from './components/ColumnFilter';
 
 
-const MAX_ROW_DISPLAY = 200;
-
-
-export const CoreTable = ({ columns, data, groupBy=null, tableDispatch }) => {
+export const CoreTable = ({ columns, data, groupBy=null, tableDispatch, paginate }) => {
     const filterTypes = React.useMemo(() => (filters), []);
     const defaultColumn = React.useMemo(() => ({Filter: BaseColumnFilter,}), []);
     const {
@@ -16,11 +14,21 @@ export const CoreTable = ({ columns, data, groupBy=null, tableDispatch }) => {
       getTableBodyProps,
       headerGroups,
       rows,
-      prepareRow
+      page,
+      prepareRow,
+      canPreviousPage,
+      canNextPage,
+      pageOptions,
+      pageCount,
+      gotoPage,
+      nextPage,
+      previousPage,
+      setPageSize,
+      state: { pageIndex, pageSize }
     } = useTable(
         {
           columns: columns.filter(c => c.hidden !== true),
-          initialState: groupBy ? {groupBy: groupBy} : {},
+          initialState: groupBy ? {groupBy: groupBy, pageIndex: 0} : {pageIndex: 0},
           data,
           defaultColumn,
           filterTypes,
@@ -28,7 +36,9 @@ export const CoreTable = ({ columns, data, groupBy=null, tableDispatch }) => {
         },
         useFilters,
         useGroupBy,
-        useExpanded
+        useSortBy,
+        useExpanded,
+        usePagination
     )
 
     const renderGroupedCell = (c, subRowCnt, subRowLength, isSpanningCol) => {
@@ -96,8 +106,6 @@ export const CoreTable = ({ columns, data, groupBy=null, tableDispatch }) => {
       }
     }
 
-    const firstPageRows = rows.filter(showRow).slice(0, MAX_ROW_DISPLAY)
-
     return (
       <div style={{"overflow":"visible", 'minHeight': 500}}>
         <table {...getTableProps()} className="ui table fixed" style={{margin: 0}}>
@@ -106,8 +114,15 @@ export const CoreTable = ({ columns, data, groupBy=null, tableDispatch }) => {
                 <tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map(column => {
                         return (
-                            <th {...column.getHeaderProps()} style={{width: column.width}}>
+                            <th {...column.getHeaderProps(column.getSortByToggleProps())} style={{width: column.width}}>
                                 {column.render('Header')}
+                                <span>
+                                  {column.isSorted
+                                    ? column.isSortedDesc
+                                      ? ' 🔽'
+                                      : ' 🔼'
+                                    : ''}
+                                </span>
                                 <div>{column.canFilter ? column.render('Filter') : null}</div>
                             </th>
                         )
@@ -116,9 +131,35 @@ export const CoreTable = ({ columns, data, groupBy=null, tableDispatch }) => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {firstPageRows.map(renderRow)}
+            {
+              paginate
+              ?
+              page.map(renderRow)
+              :
+              rows.filter(showRow).map(renderRow)
+            }
+
           </tbody>
         </table>
+        {
+          paginate
+          ?
+          <PaginationControl
+            gotoPage={gotoPage}
+            previousPage={previousPage}
+            nextPage={nextPage}
+            gotoPage={gotoPage}
+            canPreviousPage={canPreviousPage}
+            canNextPage={canNextPage}
+            pageIndex={pageIndex}
+            pageCount={pageCount}
+            pageOptions={pageOptions}
+            setPageSize={setPageSize}
+          />
+          :
+          null
+        }
+
       </div>
   )
 }

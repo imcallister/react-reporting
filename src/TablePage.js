@@ -15,7 +15,7 @@ import { queryIsInCache, getCachedResults } from './reducers/utils'
 import { Message} from 'semantic-ui-react';
 
 
-export const TablePage = ({ queryDef, tableTitle, extraHeader, columnDefs, groupBy=null, defaults }) => {
+export const TablePage = ({ queryDef, tableTitle, extraHeader, columnDefs, groupBy=null, defaults, paginate=true }) => {
     const {staticData, sessionDispatch, queryCache, serverApi, serverUrl } = useContext(SessionContext);
     const [tableState, tableDispatch] = useReducer(
       tableMiddleware(serverApi),
@@ -132,6 +132,7 @@ export const TablePage = ({ queryDef, tableTitle, extraHeader, columnDefs, group
                     handleRowClick={usedRowClickHandler}
                     tableDispatch={tableDispatch}
                     groupBy={groupBy}
+                    paginate={paginate}
                 />
                 <TableModal
                   modalOpen={modalOpen}

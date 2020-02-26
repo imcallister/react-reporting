@@ -1,6 +1,6 @@
 {
   "name": "react-reporting",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A library for financial reporting build on react-table and react-semantic-ui",
   "main": "./dist/index.js",
   "dependencies": {
